@@ -15,7 +15,7 @@
         <!-- It is never too late to be what you might have been. - George Eliot -->
         <h2>Complete el formulario para poder modificar el cliente</h2>
         <form action="{{ url('modificarCliente/' . $cliente->CUITCliente) }}" method="post">
-           <!-- @csrf  Agrega esto para incluir el token de CSRF -->
+            <!-- @csrf  Agrega esto para incluir el token de CSRF -->
 
             <label for="cuit">CUITCliente:</label>
             <input id="cuit" type="number" name="cuit" value="{{ $cliente->CUITCliente }}" readonly required>
@@ -31,7 +31,7 @@
 
             <input class="btn" type="submit" name="submit"> 
         </form>
-
+        <a class="btn" href="{{ url('/buscarCliente') }}">Volver</a>
         <script src="..//resources/js/script.js"></script>
     </body>
 </html>

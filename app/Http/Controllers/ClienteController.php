@@ -57,5 +57,7 @@ class ClienteController extends Controller {
         }
         return redirect("/crearCliente?msg=" . urlencode($msg));
     }
-
+    public function Volver(){
+        return redirec("/");
+    }
 }

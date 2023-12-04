@@ -645,8 +645,8 @@
     </head>
     <body class="antialiased">
         <header>
-            <h2>Trabajo práctico 3| Guía Práctica</h2>
-            <h3>Diego Lemercier</h3>
+            <h1>Trabajo práctico 3| Guía Práctica</h1>
+            <h2>Diego Lemercier</h2>
             <div class="msg">
                 <?php
                 if (isset($_GET["error"])) {
@@ -656,24 +656,31 @@
                 ?>
             </div>
         </header>
-        <form action="{{ route('process.csv') }}" method="post" enctype="multipart/form-data">
+        <div class="import">
+            <form action="{{ route('process.csv') }}" method="post" enctype="multipart/form-data">
 
-            <!--@csrf
-             <input type="hidden" name="request" value="{{ csrf_token() }}" /> -->
-            <button class="btn btn-file">
-                Buscar archivo
-                <input class="n" type="file" name="fileCSV" id="fileCSV" required>
-            </button>
-            <input class="btn" type="submit" name="submit">
-        </form>
-
-        <a class="btn btn-file" href="http://localhost/DAW-2023-AP03-Lemercier-Diego/public/buscarCliente">Modificar un cliente</a>
-        <a class="btn btn-file" href="http://localhost/DAW-2023-AP03-Lemercier-Diego/public/crearCliente">Dar de alta un cliente</a>
-        @if(isset($_GET['msg']))
-        <div class="alert alert-success">
-            {{ urldecode($_GET['msg']) }}
+                <!--@csrf
+                 <input type="hidden" name="request" value="{{ csrf_token() }}" /> -->
+                <button class="btn btn-file">
+                    Buscar archivo
+                    <input class="n" type="file" name="fileCSV" id="fileCSV" required>
+                </button>
+                <input class="btn" type="submit" name="submit">
+            </form>
+            <br>
+            <div>
+                <a class="btn btn-file" href="{{ url('/buscarCliente') }}">Modificar un cliente</a>
+                <a class="btn btn-file" href="{{ url('/crearCliente') }}">Dar de alta un cliente</a>
+            </div>
+            @if(isset($_GET['msg']))
+            <div class="alert alert-success">
+                {{ urldecode($_GET['msg']) }}
+            </div>
+            @endif
         </div>
-        @endif
+        <div>
+            <p id="nombreArchivo"></p>
+        </div>
         <script src="..//resources/js/script.js"></script>
     </body>
 </html>
