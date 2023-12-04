@@ -14,15 +14,21 @@
         @endif
         <!-- It is never too late to be what you might have been. - George Eliot -->
         <h2>Complete el formulario para poder modificar el cliente</h2>
-        <form action="{{ route('buscarCliente') }}" method="post">
-            <input id="cuit" type="number" name="cuit" required>CUITCliente
-            <!--             
+        <form action="{{ url('modificarCliente/' . $cliente->CUITCliente) }}" method="post">
+           <!-- @csrf  Agrega esto para incluir el token de CSRF -->
+
+            <label for="cuit">CUITCliente:</label>
+            <input id="cuit" type="number" name="cuit" value="{{ $cliente->CUITCliente }}" readonly required>
             <br>
-            <input id="razonsocial" type="text" name="razonsocial" required>Razón Social
+
+            <label for="razonsocial">Razón Social:</label>
+            <input id="razonsocial" type="text" name="razonsocial" value="{{ $cliente->RazonSocial }}" required>
             <br>
-            <input id="nro" type="number" name="nro" required>Número de cliente
+
+            <label for="nro">Número de cliente:</label>
+            <input id="nro" type="number" name="nro" value="{{ $cliente->NroCliente }}" required>
             <br> 
-            -->
+
             <input class="btn" type="submit" name="submit"> 
         </form>
 

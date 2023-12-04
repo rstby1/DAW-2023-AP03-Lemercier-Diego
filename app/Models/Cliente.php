@@ -14,6 +14,7 @@ class Cliente extends Model {
       tier int
      */
 
+    protected $primaryKey = 'CUITCliente';
     protected $table = "clientes";
     protected $fillable = ["CUITCliente", "RazonSocial", "NroCliente", "YTD", "tier"];
 

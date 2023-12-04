@@ -10,50 +10,27 @@ use App\Models\Cliente;
 class ClienteController extends Controller {
 
     public function buscarCliente(Request $request) {
-        $msg = "";
-        //yo pido un request $request
-        //y aca lo asigno según el input
-
         $cuit = $request->input('cuit');
-        /*
-          $nro = $request->input('nro');
-          $razonsocial = $request->input('razonsocial');
-         */
-        $cliente = Cliente::where('CUITCliente', $cuit)
-                //->orWhere('NroCliente', $nro)
-                //->orWhere('RazonSocial', $razonsocial)
-                ->first();
-        if ($cliente) {
-            $this->modificarCliente($request);
-        } else {
-            $msg = 'El cliente no existe.';
-        }
-        return redirect("/modificarCliente?msg=" . urlencode($msg));
+        $cliente = Cliente::where('CUITCliente', $cuit)->first();
+
+        return view('modificarCliente', ['cliente' => $cliente]);
     }
 
-    public function modificarCliente(Request $r) {
-        $msg = "";
-        $cuit = $r->input('cuit');
-        $cliente = Cliente::where('CUITCliente', $cuit)
-                //->orWhere('NroCliente', $nro)
-                //->orWhere('RazonSocial', $razonsocial)
-                ->first();
-        $nro = $r->input('nro');
-        $rs = $r->input('razonsocial');
+    public function modificarCliente(Request $request, $CUITCliente) {
+        //$cliente = Cliente::where('CUITCliente', $CUITCliente)->first();
+        $cliente = Cliente::find($CUITCliente);
         if ($cliente) {
             DB::beginTransaction();
-            $d = [
-            'CUITCliente' =>$cuit,
-            'RazonSocial' =>$rs,
-            'NroCliente' =>$nro,
-            ];
-            $cliente->save($d);
+            $d = ['CUITCliente' => $request->input('cuit'),
+                'RazonSocial' => $request->input('razonsocial'),
+                'NroCliente' => $request->input('nro'),];
+            $cliente->update($d);
             DB::commit();
             $msg = "El cliente se actualizó con éxito";
         } else {
-            $msg = "El cliente no existe, o los datos introducidos no son válidos";
+            $msg = "El cliente no existe o los datos introducidos no son válidos";
         }
-        return redirect("/modificarCliente?msg=" . urlencode($msg));
+        return redirect('/?msg=' . urlencode($msg));
     }
 
     public function altaCliente(Request $request) {

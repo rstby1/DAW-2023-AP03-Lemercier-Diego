@@ -8,10 +8,11 @@ Route::get('/', function () {
     return view('index');
 });
 //p
-Route::get('/modificarCliente', function () {
-    return view('modificarCliente');
+Route::post('/modificarCliente/{cuit}', [ClienteController::class, 'modificarCliente'])->name('modificarCliente');
+Route::get('/buscarCliente', function(){
+    return view('modificarCliente/Cliente');
 });
-Route::post('/modificarCliente', [ClienteController::class, 'modificarCliente'])->name('modificarCliente');
+//Route::post('/modificarCliente', [ClienteController::class, 'modificarCliente'])->name('modificarCliente');
 
 Route::get('/crearCliente', function () {
     return view('crearCliente');

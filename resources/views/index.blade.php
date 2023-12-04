@@ -666,8 +666,14 @@
             </button>
             <input class="btn" type="submit" name="submit">
         </form>
-        <a class="btn btn-file" href="http://localhost/DAW-2023-AP03-Lemercier-Diego/public/modificarCliente">Modificar un cliente</a>
+
+        <a class="btn btn-file" href="http://localhost/DAW-2023-AP03-Lemercier-Diego/public/buscarCliente">Modificar un cliente</a>
         <a class="btn btn-file" href="http://localhost/DAW-2023-AP03-Lemercier-Diego/public/crearCliente">Dar de alta un cliente</a>
+        @if(isset($_GET['msg']))
+        <div class="alert alert-success">
+            {{ urldecode($_GET['msg']) }}
+        </div>
+        @endif
         <script src="..//resources/js/script.js"></script>
     </body>
 </html>
