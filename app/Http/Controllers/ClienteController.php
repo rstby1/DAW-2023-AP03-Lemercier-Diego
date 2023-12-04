@@ -11,9 +11,14 @@ class ClienteController extends Controller {
 
     public function buscarCliente(Request $request) {
         $cuit = $request->input('cuit');
-        $cliente = Cliente::where('CUITCliente', $cuit)->first();
 
-        return view('modificarCliente', ['cliente' => $cliente]);
+        if (Cliente::find($cuit)) {
+            $cliente = Cliente::where('CUITCliente', $cuit)->first();
+            return view('modificarCliente', ['cliente' => $cliente]);
+        } else {
+            $msg = "El cliente no existe o los datos introducidos no son válidos";
+            return redirect('/?msg=' . urlencode($msg));
+        }
     }
 
     public function modificarCliente(Request $request, $CUITCliente) {
@@ -57,7 +62,9 @@ class ClienteController extends Controller {
         }
         return redirect("/crearCliente?msg=" . urlencode($msg));
     }
-    public function Volver(){
+
+    public function Volver() {
         return redirec("/");
     }
+
 }
