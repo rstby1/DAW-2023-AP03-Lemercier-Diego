@@ -16,7 +16,7 @@ class Cliente extends Model {
 
     protected $primaryKey = 'CUITCliente';
     protected $table = "clientes";
-    protected $fillable = ["CUITCliente", "RazonSocial", "NroCliente", "YTD", "tier"];
+    protected $fillable = ["CUITCliente", "RazonSocial", "NroCliente", "YTD", "tier",];
 
     //este metodo se llama cuando se inicializa el modelo
     protected static function boot() {

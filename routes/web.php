@@ -20,5 +20,4 @@ Route::get('/crearCliente', function () {
 
 Route::post('/import', [CsvController::class, 'procesarCSV'])->name('process.csv');
 Route::post('/buscarCliente', [ClienteController::class, 'buscarCliente'])->name('buscarCliente');
-
 Route::post('/crearCliente', [ClienteController::class, 'altaCliente'])->name('altaCliente');

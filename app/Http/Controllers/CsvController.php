@@ -22,68 +22,66 @@ class CsvController extends Controller {
 
     private function impData($file) {
         $msg = 'Mensaje Default';
-        if ($this->checkCSV($file)) {
             try {
-                //if ($this->checkCSV($file)) {
-                if (($handle = fopen($file, 'r')) !== false) {
-                    fgetcsv($handle, 1000, ';');
-                    while (($data = fgetcsv($handle, 1000, ';')) !== false) {
-                        if (count($data) === 8) {
-                            try {
-                                $dVenta = [
-                                    'Fecha' => strtolower($data[0]),
-                                    'TipoComprobante' => strtoupper($data[1]),
-                                    'PuntoVenta' => $data[2],
-                                    'NumeroComprobante' => $data[3],
-                                    'ImporteVenta' => $data[4],
-                                    'CUITCliente' => $data[5],
-                                ];
-                                $dCliente = [
-                                    'CUITCliente' => $data[5],
-                                    'RazonSocial' => $data[6],
-                                    'NroCliente' => $data[7],
-                                ];
-                                $x = Cliente::where('CUITCliente', $data[5])->first();
-                                $y = ImportVenta::where('TipoComprobante', $data[1])
-                                        ->where('NumeroComprobante', $data[3])
-                                        ->first();
-                                //intenté hacer una funcion aparte pero no llegaba con el tiempo
-                                if ($x && $x->NroCliente != $data[7]) {
-                                    $msg = 'Error: El CUIT ' . $data[5] . ' ya está registrado en otro cliente con NroCliente(' . $data[7] . ')diferente.';
-                                    $msg = 'Ya introducidos: ' . $x->CUITCliente . ', NroCliente: ' . $x->NroCliente;
-                                } elseif ($y) {
-                                    $msg = 'Error: El comprobante ' . $data[1] . ' - ' . $data[3] . ' ya existe.';
-                                } elseif ($dVenta['ImporteVenta'] == 0) {
-                                    $msg = 'Error: El importe de la venta no puede ser cero o nulo.';
-                                } elseif (Carbon::createFromFormat('d/m/Y', $dVenta['Fecha'])->isFuture()) {
-                                    $msg = 'Error: La fecha del comprobante no puede ser futura.';
-                                } else {
-                                    DB::beginTransaction();
-                                    Cliente::updateOrInsert($dCliente);
-                                    ImportVenta::create($dVenta);
-                                    $this->updateStats();
-                                    DB::commit();
-                                    $msg = 'Datos cargados con éxito. ';
+               // if ($this->checkCSV($file)) {
+                    if (($handle = fopen($file, 'r')) !== false) {
+                        fgetcsv($handle, 1000, ';');
+                        while (($data = fgetcsv($handle, 1000, ';')) !== false) {
+                            if (count($data) === 8) {
+                                try {
+                                    $dVenta = [
+                                        'Fecha' => strtolower($data[0]),
+                                        'TipoComprobante' => strtoupper($data[1]),
+                                        'PuntoVenta' => $data[2],
+                                        'NumeroComprobante' => $data[3],
+                                        'ImporteVenta' => $data[4],
+                                        'CUITCliente' => $data[5],
+                                    ];
+                                    $dCliente = [
+                                        'CUITCliente' => $data[5],
+                                        'RazonSocial' => $data[6],
+                                        'NroCliente' => $data[7],
+                                    ];
+                                    $x = Cliente::where('CUITCliente', $data[5])->first();
+                                    $y = ImportVenta::where('TipoComprobante', $data[1])
+                                            ->where('NumeroComprobante', $data[3])
+                                            ->first();
+                                    //intenté hacer una funcion aparte pero no llegaba con el tiempo
+                                    if ($x && $x->NroCliente != $data[7]) {
+                                        $msg = 'Error: El CUIT ' . $data[5] . ' ya está registrado en otro cliente con NroCliente(' . $data[7] . ')diferente.';
+                                        $msg = 'Ya introducidos: ' . $x->CUITCliente . ', NroCliente: ' . $x->NroCliente;
+                                    } elseif ($y) {
+                                        $msg = 'Error: El comprobante ' . $data[1] . ' - ' . $data[3] . ' ya existe.';
+                                    } elseif ($dVenta['ImporteVenta'] == 0) {
+                                        $msg = 'Error: El importe de la venta no puede ser cero o nulo.';
+                                    } elseif (Carbon::createFromFormat('d/m/Y', $dVenta['Fecha'])->isFuture()) {
+                                        $msg = 'Error: La fecha del comprobante no puede ser futura.';
+                                    } else {
+                                        DB::beginTransaction();
+                                        Cliente::updateOrInsert($dCliente);
+                                        ImportVenta::create($dVenta);
+                                        $this->updateStats();
+                                        DB::commit();
+                                        $msg = 'Datos cargados con éxito. ';
+                                        echo $msg;
+                                    }
                                     echo $msg;
+                                } catch (\Exception $e) {
+                                    DB::rollBack();
+                                    throw new \Exception('Error al procesar datos. Detalles: ' . $e->getMessage());
                                 }
+                            } else {
+                                $msg = 'Número incorrecto de columnas! ';
                                 echo $msg;
-                            } catch (\Exception $e) {
-                                DB::rollBack();
-                                throw new \Exception('Error al procesar datos. Detalles: ' . $e->getMessage());
                             }
-                        } else {
-                            $msg = 'Número incorrecto de columnas! ';
-                            echo $msg;
                         }
                     }
-                }
+              /*  }else{
+                    echo "No es un CSV";
+                }*/
             } catch (Exception $ex) {
                 throw new \Exception('Error al procesar datos. Detalles: ' . $e->getMessage());
             }
-        } else {
-            $msg = 'No es un archivo CSV ';
-            echo $msg;
-        }
     }
 
     private function updateStats() {

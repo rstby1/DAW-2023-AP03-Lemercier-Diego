@@ -42,6 +42,7 @@ class ClienteController extends Controller {
         $msg = "";
         $cuit = $request->input('cuit');
         $nro = $request->input('nro');
+        
         $razonsocial = $request->input('razonsocial');
         $cliente = Cliente::where('CUITCliente', $cuit)
                 ->orWhere('NroCliente', $nro)
@@ -62,7 +63,6 @@ class ClienteController extends Controller {
         }
         return redirect("/crearCliente?msg=" . urlencode($msg));
     }
-
     public function Volver() {
         return redirec("/");
     }
