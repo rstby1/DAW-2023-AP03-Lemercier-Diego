@@ -658,19 +658,19 @@
         </header>
         <div class="import">
             <form action="{{ route('process.csv') }}" method="post" enctype="multipart/form-data">
-                
+
                 <!--@csrf
                  <input type="hidden" name="request" value="{{ csrf_token() }}" /> -->
                 <button class="btn btn-file">
-                    Buscar archivo
+                    Search file
                     <input class="n" type="file" name="fileCSV" id="fileCSV" required>
                 </button>
-                <input class="btn" type="submit" name="submit">
+                <input class="btn"  text="Submit" type="submit" name="submit"/>
             </form>
             <br>
             <div>
-                <a class="btn btn-file" href="{{ url('/buscarCliente') }}">Modificar un cliente</a>
-                <a class="btn btn-file" href="{{ url('/crearCliente') }}">Dar de alta un cliente</a>
+                <a class="btn btn-file" href="{{ url('/buscarCliente') }}">Modify customer</a>
+                <a class="btn btn-file" href="{{ url('/crearCliente') }}">Remove customer</a>
             </div>
             @if(isset($_GET['msg']))
             <div class="alert alert-success">
